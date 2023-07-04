@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:gvpw_connect/pages/developers_page.dart';
 import 'package:gvpw_connect/pages/password_reset_page.dart';
 import 'package:gvpw_connect/providers/internet_provider.dart';
 import 'package:gvpw_connect/providers/theme_provider.dart';
@@ -74,9 +75,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             color: ThemeProvider.iconSecondary,
                             size: 40,
                           ),
-                          onTap: () {
-                            Util.launchEmail(emailAddresses: ["rohitkeerthikanth@gmail.com","contact@prudhvisuraaj.me"],subject: "Bug:connect for admin",body: "*Please attest pictures showing bug*");
-
+                          onTap: () async{
+                            Util.launchLink('https://github.com/Rohit-KK15/Calcify/issues/new/choose');
                           },
                         ),
                         ListTile(
@@ -126,6 +126,17 @@ class _SettingsPageState extends State<SettingsPage> {
                           },
                         ),
                         ListTile(
+                          title: Util.label("Developers",color: ThemeProvider.fontPrimary, fontSize: FontSize.textLg),
+                          leading: const Icon(
+                            Ionicons.logo_android,
+                            color: ThemeProvider.iconSecondary,
+                            size: 40,
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, DevelopersInfo.id);
+                          },
+                        ),
+                        ListTile(
                           title: Util.label("Log out",
                               color: ThemeProvider.fontPrimary, fontSize: FontSize.textLg),
                           subtitle: Util.label("logout from this device.",
@@ -146,7 +157,9 @@ class _SettingsPageState extends State<SettingsPage> {
                               AuthService.logOut(context);
                             }
                           },
-                        )
+                        ),
+                        const SizedBox(height: 10,),
+
                       ],
                     ),
                   ),

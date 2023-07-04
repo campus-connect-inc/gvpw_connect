@@ -1,3 +1,4 @@
+import 'package:gvpw_connect/pages/developers_page.dart';
 import 'package:gvpw_connect/pages/password_reset_page.dart';
 import 'package:gvpw_connect/pages/settings_page.dart';
 import 'package:gvpw_connect/pages/survey_submit_success_page.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
               const SurveySubmitSuccessPage(),
           UserProfileEditPage.id: (context) => const UserProfileEditPage(),
           SettingsPage.id: (context) => const SettingsPage(),
+          DevelopersInfo.id: (context) => DevelopersInfo(),
         },
       ),
     );
