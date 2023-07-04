@@ -132,8 +132,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             color: ThemeProvider.iconSecondary,
                             size: 40,
                           ),
+                          subtitle: Util.label(
+                              "Check out developers.",
+                              color: ThemeProvider.fontPrimary.withOpacity(0.7),
+                              fontSize: FontSize.textSm),
                           onTap: () {
-                            Navigator.pushNamed(context, DevelopersInfo.id);
+                            Navigator.pushNamed(context, DevelopersPage.id);
                           },
                         ),
                         ListTile(

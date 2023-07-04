@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gvpw_connect/widgets/developer_profile_tile.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../providers/theme_provider.dart';
 import '../styles/styles.dart';
 import '../utils/util.dart';
+import '../widgets/main_app_bar.dart';
 
-class DevelopersInfo extends StatelessWidget {
-  const DevelopersInfo({Key? key}) : super(key: key);
+class DevelopersPage extends StatelessWidget {
+  DevelopersPage({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   static const id = 'developers_page';
 
   @override
@@ -15,79 +19,23 @@ class DevelopersInfo extends StatelessWidget {
     return Scaffold(
         appBar: Util.commonAppBar(context, name: "Developers",backgroundColor: ThemeProvider.primary),
         backgroundColor: ThemeProvider.primary,
-        body:Column(
+        body:const Column(
           children: [
-            const SizedBox(height: 30,),
-            ListTile(
-              title: Row(
-                children: [
-                  Util.label("Prudhvi Suraaj : ",color: ThemeProvider.fontPrimary, fontSize: FontSize.textLg),
-                  IconButton(
-                    icon:const Icon(Ionicons.logo_instagram),
-                    color: ThemeProvider.iconSecondary,
-                    onPressed:() async{
-                      await Util.launchLink('https://www.instagram.com/gps_xtreme');
-                    },
-                    splashRadius: 20,
-                  ),
-                  IconButton(
-                    icon:const Icon(Ionicons.logo_linkedin),
-                    color: ThemeProvider.iconSecondary,
-                    onPressed:() async{
-                      await Util.launchLink('https://www.linkedin.com/in/prudhvi-suraaj-461155227/');
-                    },
-                    splashRadius: 20,
-                  ),
-                  IconButton(
-                    icon:const Icon(Ionicons.logo_discord),
-                    color: ThemeProvider.iconSecondary,
-                    onPressed:() async{
-                      await Util.launchLink('https://www.discordapp.com/users/451709285454446592');
-                    },
-                    splashRadius: 20,
-                  ),
-                ],
-              ),
-              leading: ClipOval(
-                  child: Image.asset('assets/dev_profiles/dev1.jpg',width: 50,height: 50,)
-              ),
-            ),
-            const SizedBox(height: 40,),
-            ListTile(
-              title: Row(
-                children: [
-                  Util.label("Rohit KK              : ",color: ThemeProvider.fontPrimary, fontSize: FontSize.textLg),
-                  const SizedBox(width: 0,),
-                  IconButton(
-                    icon:const Icon(Ionicons.logo_instagram),
-                    color: ThemeProvider.iconSecondary,
-                    onPressed: () async{
-                      await Util.launchLink('https://www.instagram.com/_rohit_kk_');
-                    },
-                    splashRadius: 20,
-                  ),
-                  IconButton(
-                    icon:const Icon(Ionicons.logo_linkedin),
-                    color: ThemeProvider.iconSecondary,
-                    onPressed:() async{
-                      await Util.launchLink('https://www.linkedin.com/in/keerthikanth-rohit-a-794506251/');
-                    },
-                    splashRadius: 20,
-                  ),
-                  IconButton(
-                    icon:const Icon(Ionicons.logo_discord),
-                    color: ThemeProvider.iconSecondary,
-                    onPressed:() async{
-                      await Util.launchLink('https://www.discordapp.com/users/843176213090140182');
-                    },
-                    splashRadius: 20,
-                  ),
-                ],
-              ),
-              leading: ClipOval(
-                  child: Image.asset('assets/dev_profiles/dev2.jpg',width: 50,height: 50,)
-              ),
-            ),
+            SizedBox(height: 10,),
+            DeveloperProfileTile(
+                profileUrl: "https://firebasestorage.googleapis.com/v0/b/campus-connect-inc.appspot.com/o/developerProfiles%2Fprudhvi-dev-profile.jpeg?alt=media&token=ea57a394-4534-4b22-8cce-e760f6f332fd",
+                devName: "Prudhvi suraaj",
+                discordLink: "https://www.discordapp.com/users/451709285454446592",
+                instagramLink: "https://www.instagram.com/gps_xtreme",
+                githubLink: "https://github.com/GPSxtreme",
+                linkedInLink: "https://www.linkedin.com/in/prudhvi-suraaj-461155227/"),
+            DeveloperProfileTile(
+                profileUrl: "https://firebasestorage.googleapis.com/v0/b/campus-connect-inc.appspot.com/o/developerProfiles%2Frohit-dev-profile.jpeg?alt=media&token=bb7ff7a0-2985-460b-b0ef-231e877f53fb",
+                devName: "Keerthikanth Rohit",
+                discordLink: "https://www.discordapp.com/users/843176213090140182",
+                instagramLink: "https://www.instagram.com/_rohit_kk_",
+                githubLink: "https://github.com/Rohit-KK15",
+                linkedInLink: "https://www.linkedin.com/in/keerthikanth-rohit-a-794506251/"),
           ],
         )
     );
