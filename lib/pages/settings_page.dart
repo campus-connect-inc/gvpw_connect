@@ -76,7 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             size: 40,
                           ),
                           onTap: () async{
-                            Util.launchLink('https://github.com/Rohit-KK15/Calcify/issues/new/choose');
+                            Util.launchLink('https://github.com/campus-connect-inc/gvpw_connect/issues/new/choose');
                           },
                         ),
                         ListTile(
