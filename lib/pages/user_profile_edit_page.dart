@@ -167,7 +167,7 @@ class _UserProfileEditPageState extends State<UserProfileEditPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.all(25.0),
                       child: SizedBox(
                         height: device.size.height * 0.57,
                         child: NotificationListener<OverscrollIndicatorNotification>(
@@ -284,9 +284,9 @@ class _UserProfileEditPageState extends State<UserProfileEditPage> {
                                   children: [
                                     Expanded(
                                       child: ElevatedButton(
-                                        onPressed: () async {
+                                        onPressed: !isUpdating ? () async {
                                           await onUpdate(userDataProvider);
-                                        },
+                                        } : null,
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 8, horizontal: 0),
@@ -308,7 +308,7 @@ class _UserProfileEditPageState extends State<UserProfileEditPage> {
                                                 fontSize: FontSize.textLg),
                                           )
                                               : SpinKitCircle(
-                                            color: ThemeProvider.primary,
+                                            color: ThemeProvider.accent,
                                             size: 25,
                                           ),
                                         ),
