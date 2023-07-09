@@ -29,8 +29,4 @@ class SharedPreferencesService {
     userOrg = organisation;
     await _sharedPreferences!.setString('userOrganisation', organisation);
   }
-  /// clear local notifications
-  static Future<void> clearAllNotifications()async{
-    await _sharedPreferences!.setStringList("notifications", []);
-  }
 }

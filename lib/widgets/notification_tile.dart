@@ -35,7 +35,7 @@ class _NotificationTileState extends State<NotificationTile> {
               ),
               title: Text(
                 'Delete Notification',
-                style: Styles.textStyle(color: ThemeProvider.fontPrimary,fontWeight: FontWeight.w500),
+                style: Styles.textStyle(color: ThemeProvider.fontPrimary),
               ),
               onTap: () async {
                 // Perform deletion logic here

@@ -24,12 +24,11 @@ class FcmService{
   ///subscribe user to cloud messaging topics
   static Future<void> subscribeToTopic(String dept)async{
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    final String allTopic = '${SharedPreferencesService.userOrg}_All';
-    final String deptTopic = '${SharedPreferencesService.userOrg}_$dept';
-    await messaging.subscribeToTopic(allTopic);
-    await messaging.subscribeToTopic(deptTopic);
+    final String topic = '${SharedPreferencesService.userOrg}_All';
+    messaging.subscribeToTopic(topic);
+    messaging.subscribeToTopic(dept.trim());
     if(kDebugMode){
-      print('Successfully subscribe to topics  : $allTopic & $deptTopic');
+      print('Successfully subscribe to topic  : $topic');
     }
   }
 

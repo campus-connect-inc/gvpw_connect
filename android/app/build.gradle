@@ -59,7 +59,7 @@ android {
         multiDexEnabled true
         //------------------------------
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 1
+        versionCode 12
         versionName flutterVersionName
     }
 

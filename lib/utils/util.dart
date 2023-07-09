@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gvpw_connect/providers/theme_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../providers/route_provider.dart';
 import '../styles/styles.dart';
-import 'package:in_app_update/in_app_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Util {
@@ -25,21 +23,7 @@ class Util {
         textColor: ThemeProvider.accent,
         fontSize: 16.0);
   }
-  /// checks for update from android play store.
-  static Future<bool> checkForUpdate() async {
-    try{
-      final updateInfo = await InAppUpdate.checkForUpdate();
-      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-        InAppUpdate.performImmediateUpdate();
-        return true;
-      }
-    }catch (e){
-      if(kDebugMode){
-        print("Error : $e");
-      }
-    }
-    return false;
-  }
+
   ///A standard ListViewRenderer.
   static Widget listViewRenderer(List list,
       {required double verticalGap, required double horizontalGap}) {

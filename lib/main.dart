@@ -1,7 +1,9 @@
-import 'package:gvpw_connect/app_router.dart';
-import 'package:gvpw_connect/pages/no_internet_page.dart';
-import 'package:gvpw_connect/pages/splash_page.dart';
-import 'package:gvpw_connect/providers/internet_provider.dart';
+import 'package:gvpw_connect/pages/developers_page.dart';
+import 'package:gvpw_connect/pages/password_reset_page.dart';
+import 'package:gvpw_connect/pages/settings_page.dart';
+import 'package:gvpw_connect/pages/survey_submit_success_page.dart';
+import 'package:gvpw_connect/pages/user_filled_surveys_page.dart';
+import 'package:gvpw_connect/pages/user_profile_edit_page.dart';
 import 'package:gvpw_connect/providers/notification_provider.dart';
 import 'package:gvpw_connect/providers/route_provider.dart';
 import 'package:gvpw_connect/providers/user_data_provider.dart';
@@ -12,7 +14,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-
+import 'package:gvpw_connect/pages/login_page.dart';
+import 'package:gvpw_connect/pages/surveys_page.dart';
+import 'package:gvpw_connect/pages/splash_page.dart';
 
 ///Used to notify new notifications.
 NotificationProvider notificationProvider = NotificationProvider();
@@ -45,28 +49,22 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: notificationProvider),
         ChangeNotifierProvider(create: (context) => RouteNameProvider()),
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
-        ChangeNotifierProvider(create: (context) => InternetProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: SplashPage.id,
         navigatorObservers: [MyNavigatorObserver(RouteNameProvider())],
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        builder: (context, child) {
-          return Stack(
-            children: [
-              child!,
-              Consumer<InternetProvider>(
-                builder: (context, internetProvider, child) {
-                  if (!internetProvider.hasInternet) {
-                    return const NoInternetPage();
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),
-            ],
-          );
+        routes: {
+          SplashPage.id: (context) => const SplashPage(),
+          LoginPage.id: (context) => const LoginPage(),
+          PasswordResetPage.id: (context) => const PasswordResetPage(),
+          UserFilledSurveysPage.id: (context) => const UserFilledSurveysPage(),
+          SurveysPage.id: (context) => const SurveysPage(),
+          SurveySubmitSuccessPage.id: (context) =>
+              const SurveySubmitSuccessPage(),
+          UserProfileEditPage.id: (context) => const UserProfileEditPage(),
+          SettingsPage.id: (context) => const SettingsPage(),
+          DevelopersInfo.id: (context) => DevelopersInfo(),
         },
       ),
     );

@@ -112,14 +112,14 @@ class NotificationProvider extends ChangeNotifier with WidgetsBindingObserver {
         ?.createNotificationChannel(foregroundChannel);
 
     //handle messages on foreground.
-    FirebaseMessaging.onMessage.listen((RemoteMessage notification) async {
-      await saveNotificationLocally(notification);
-      sendNotification(notification,foregroundChannel);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      await saveNotificationLocally(message);
+      sendNotification(message,foregroundChannel);
     });
 
     //fetch the same messages when the app gets opened.
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage notification) async {
-      await saveNotificationLocally(notification);
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      await saveNotificationLocally(message);
     });
 
     ///If the application has been opened from a terminated state via a RemoteMessage (containing a Notification), it will be returned, otherwise it will be null.
@@ -139,7 +139,7 @@ class NotificationProvider extends ChangeNotifier with WidgetsBindingObserver {
       isFetchingMessages = true;
       localNotifications.clear();
       localNotifications = SharedPreferencesService.sharedPreferences!
-          .getStringList('notifications')
+          .getStringList('messages')
           ?.map((msg) => jsonDecode(msg))
           .toList() ??
           [];
@@ -170,12 +170,6 @@ class NotificationProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   void resetIsOnNotificationsPage() {
     isOnNotificationPage = false;
-    notifyListeners();
-  }
-
-  Future<void> clearAllLocalNotifications() async{
-    await SharedPreferencesService.clearAllNotifications();
-    localNotifications.clear();
     notifyListeners();
   }
 
@@ -215,19 +209,19 @@ class NotificationProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   Future<void> saveNotificationLocally(RemoteMessage message) async {
     await SharedPreferencesService.waitForInitialization();
-    List savedNotifications = SharedPreferencesService.sharedPreferences!
-        .getStringList('notifications')
+    List savedMessages = SharedPreferencesService.sharedPreferences!
+        .getStringList('messages')
         ?.map((msg) => jsonDecode(msg))
         .toList() ??
         [];
     //check if the message already exists in the local storage
     //then add the message.
-    if (savedNotifications.any((localMessage) => localMessage['messageId'] != message.messageId) ||
-        savedNotifications.isEmpty) {
-      savedNotifications.add(message.toMap());
+    if (savedMessages.any((localMessage) => localMessage['messageId'] != message.messageId) ||
+        savedMessages.isEmpty) {
+      savedMessages.add(message.toMap());
     }
     await SharedPreferencesService.sharedPreferences!.setStringList(
-        'notifications', savedNotifications.map((msg) => jsonEncode(msg)).toList());
+        'messages', savedMessages.map((msg) => jsonEncode(msg)).toList());
     if (isOnNotificationPage) {
       //set isSeen shared preference to true
       await SharedPreferencesService.sharedPreferences!.setBool('isSeen', true);
@@ -248,7 +242,7 @@ class NotificationProvider extends ChangeNotifier with WidgetsBindingObserver {
     notificationProvider.localNotifications.removeAt(index);
     // Update the SharedPreferences with the updated list of notifications
     await SharedPreferencesService.sharedPreferences!.setStringList(
-      'notifications',
+      'messages',
       notificationProvider.localNotifications
           .map((msg) => jsonEncode(msg))
           .toList(),

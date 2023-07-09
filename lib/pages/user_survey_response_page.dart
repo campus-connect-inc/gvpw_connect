@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gvpw_connect/pages/fill_survey_page.dart';
 import 'package:gvpw_connect/providers/theme_provider.dart';
+import 'package:gvpw_connect/providers/internet_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../styles/styles.dart';
 import '../utils/auth_service.dart';
 import '../utils/shared_preferences_service.dart';
 import '../utils/util.dart';
-import '../utils/consts.dart';
 
 class UserSurveyResponsePage extends StatefulWidget {
   const UserSurveyResponsePage({Key? key, required this.surveyId})
@@ -93,7 +94,7 @@ class _UserSurveyResponsePageState extends State<UserSurveyResponsePage> {
         if (responseData!.containsKey(questionId)) {
           // Check the question type
           String questionType = question.data()["type"];
-          if (questionType == QUESTION_TYPE.mcq.toString()) {
+          if (questionType == QuestionType.mcq.toString()) {
             // Fetch the selected option index from the response data
             int selectedOptionIndex = int.parse(responseData![questionId]) - 1;
             // Fetch the options array for the question
@@ -104,18 +105,18 @@ class _UserSurveyResponsePageState extends State<UserSurveyResponsePage> {
               // Add the question and selected option to the survey response
               sectionQuestions.add({
                 "questionId": questionId,
-                "type" : QUESTION_TYPE.mcq.toString(),
+                "type" : QuestionType.mcq.toString(),
                 "question": question.data()["question"],
                 "response": selectedOption,
               });
             }
-          } else if (questionType == QUESTION_TYPE.textfield.toString()) {
+          } else if (questionType == QuestionType.textfield.toString()) {
             // Fetch the response value for the textfield question
             String responseValue = responseData![questionId];
             // Add the question and response value to the survey response
             sectionQuestions.add({
               "questionId": questionId,
-              "type" : QUESTION_TYPE.textfield.toString(),
+              "type" : QuestionType.textfield.toString(),
               "question": question.data()["question"],
               "response": responseValue,
             });
@@ -141,109 +142,112 @@ class _UserSurveyResponsePageState extends State<UserSurveyResponsePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Util.commonAppBar(context, name: "Response"),
-      backgroundColor: ThemeProvider.primary,
-      body: !isLoading
-          ? NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (overScroll) {
-          overScroll.disallowIndicator();
-          return true;
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Util.label(surveyData!["name"],
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 25),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Util.label(surveyData!["about"],
-                        color: Colors.white70),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Util.label("Submitted on  ",
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Util.label(
-                        Util.formatTimestamp(
-                            responseData!["submittedOn"]),
-                        color: ThemeProvider.fontSecondary,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
-                    const SizedBox(height: 15,),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: surveyResponse.length,
-                      itemBuilder: (BuildContext context, int sectionIndex) {
-                        Map<String,dynamic> sectionData = surveyResponse[sectionIndex];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 10,),
-                            if(sectionData.containsKey("sectionName"))
-                              Util.sectionName(sectionData["sectionName"]),
-                            if(sectionData.containsKey("sectionPrelude"))
-                              Util.label(sectionData["sectionPrelude"],fontSize: FontSize.textBase,color: Colors.white.withOpacity(0.8)),
-                              const SizedBox(height: 15,),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: surveyResponse[sectionIndex]["questions"].length,
-                              itemBuilder: (BuildContext context, int questionIndex) {
-                                Map<String,dynamic> questionData = surveyResponse[sectionIndex]["questions"][questionIndex];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 5),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Util.label(questionData["question"],color: Colors.white,fontSize: FontSize.textXl),
-                                      const SizedBox(height: 10,),
-                                      Util.label(questionData["response"],color: Colors.blue,fontSize: FontSize.textLg)
-                                    ],
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-                        );
-                      },
-                    )
-                  ],
+    print(surveyResponse);
+    return InternetProvider(
+      child: Scaffold(
+        appBar: Util.commonAppBar(context, name: "Response"),
+        backgroundColor: ThemeProvider.primary,
+        body: !isLoading
+            ? NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overScroll) {
+            overScroll.disallowIndicator();
+            return true;
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-            ],
-          ),
-        ),
-      )
-          : Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: SpinKitCircle(
-              color: ThemeProvider.accent,
-              size: 60,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Util.label(surveyData!["name"],
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 25),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Util.label(surveyData!["about"],
+                          color: Colors.white70),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Util.label("Submitted on  ",
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Util.label(
+                          Util.formatTimestamp(
+                              responseData!["submittedOn"]),
+                          color: ThemeProvider.fontSecondary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                      const SizedBox(height: 15,),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: surveyResponse.length,
+                        itemBuilder: (BuildContext context, int sectionIndex) { 
+                          Map<String,dynamic> sectionData = surveyResponse[sectionIndex];
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 10,),
+                              if(sectionData.containsKey("sectionName"))
+                                Util.sectionName(sectionData["sectionName"]),
+                              if(sectionData.containsKey("sectionPrelude"))
+                                Util.label(sectionData["sectionPrelude"],fontSize: FontSize.textBase,color: Colors.white.withOpacity(0.8)),
+                                const SizedBox(height: 15,),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: surveyResponse[sectionIndex]["questions"].length,
+                                itemBuilder: (BuildContext context, int questionIndex) { 
+                                  Map<String,dynamic> questionData = surveyResponse[sectionIndex]["questions"][questionIndex];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 5),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Util.label(questionData["question"],color: Colors.white,fontSize: FontSize.textXl),
+                                        const SizedBox(height: 10,),
+                                        Util.label(questionData["response"],color: Colors.blue,fontSize: FontSize.textLg)
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
-          )
-        ],
+          ),
+        )
+            : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: SpinKitCircle(
+                color: ThemeProvider.accent,
+                size: 60,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

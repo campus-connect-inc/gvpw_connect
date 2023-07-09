@@ -171,7 +171,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                                 borderRadius: BorderRadius.circular(18),
                               ),
                             ),
-                            onPressed: !isProcessing ? () async {
+                            onPressed: () async {
                               if(RegExp(
                                   r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(emailController.text)){
@@ -196,7 +196,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                               }else{
                                 Util.toast("Invalid email.");
                               }
-                            } : null ,
+                            },
                             child: !isProcessing
                                 ? Text(!isLoggedIn ? "Continue" : "Send link",
                                 style: Styles.textStyle(

@@ -42,13 +42,41 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-linux/flutter/generated_plugin_registrant.cc
-linux/flutter/generated_plugins.cmake
-macos/Flutter/GeneratedPluginRegistrant.swift
-windows/flutter/generated_plugin_registrant.cc
-windows/flutter/generated_plugins.cmake
-linux/flutter/generated_plugin_registrant.cc
-linux/flutter/generated_plugins.cmake
-macos/Flutter/GeneratedPluginRegistrant.swift
-windows/flutter/generated_plugin_registrant.cc
-windows/flutter/generated_plugins.cmake
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.packages
+
+# Android related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/app/google-services.json
+
+# iOS/Xcode related
+**/ios/.symlinks/
+**/ios/Debug/
+**/ios/Generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flutter/assets/AppIcon.appiconset/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/ 
+**/ios/Runner/GoogleService-Info.plist
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Firebase related
+**/lib/firebase_options.dart
+**/web/firebase-config.js
+
+# node modules
+node_modules/

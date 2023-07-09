@@ -4,7 +4,6 @@ import 'package:gvpw_connect/widgets/notification_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
 import '../styles/styles.dart';
@@ -58,62 +57,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
     });
   }
 
-  void showPickOptions(NotificationProvider notificationProvider) => showModalBottomSheet(
-    backgroundColor: ThemeProvider.primary,
-    context: context,
-    builder: (BuildContext context) {
-      return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(
-                Icons.clear_all,
-                color: ThemeProvider.fontPrimary,
-              ),
-              title: Text(
-                'clear all',
-                style: Styles.textStyle(
-                    color: ThemeProvider.accent,
-                    fontWeight: FontWeight.w500,
-                    fontSize: FontSize.textLg),
-              ),
-              onTap: notificationProvider.localNotifications.isNotEmpty ? () async {
-                Navigator.pop(context);
-                bool? response = await Util.commonAlertDialog(context,
-                    title: "Clear all notifications?",
-                    body: "Are you sure that you want to delete all notifications?",
-                    agreeLabel: "Yes",
-                    denyLabel: "cancel");
-                if(response != null && response){
-                  await notificationProvider.clearAllLocalNotifications();
-                }
-              } : null,
-            ),
-          ],
-        ),
-      );
-    },
-  );
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData device = MediaQuery.of(context);
     return Consumer<NotificationProvider>(
       builder: (context, notificationProvider, child) {
         return Scaffold(
-          appBar: Util.commonAppBar(context, name: "Notifications", actions: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: IconButton(
-                splashRadius: 20.0,
-                icon: const Icon(Ionicons.ellipsis_vertical),
-                onPressed: (){
-                  showPickOptions(notificationProvider);
-                },
-              ),
-            ),
-          ]),
+          appBar: Util.commonAppBar(context, name: "Notifications"),
           backgroundColor: ThemeProvider.primary,
           body: !isLoading
               ? notificationProvider.localNotifications.isNotEmpty
