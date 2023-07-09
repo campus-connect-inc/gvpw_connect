@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:gvpw_connect/providers/internet_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +165,7 @@ class _OtpPageState extends State<OtpPage> {
       if (widget.userCred.user?.phoneNumber == null) {
         //user account is not yet linked with the available phone number so we fetch it from db and store it in [phoneNo].
         final HttpsCallable getUserPhoneNumber =
-        FirebaseFunctions.instanceFor(region: firebaseCFRegion).httpsCallable('getUserPhoneNumber');
+        FirebaseFunctions.instanceFor(region: FIREBASE_CF_REGION).httpsCallable('getUserPhoneNumber');
         try {
           final response = await getUserPhoneNumber.call(<String, dynamic>{
             'orgCode': SharedPreferencesService.userOrg,
@@ -267,192 +266,190 @@ class _OtpPageState extends State<OtpPage> {
             color: Colors.transparent,
             border:
             Border(bottom: BorderSide(color: ThemeProvider.fontPrimary, width: 2.0))));
-    return InternetProvider(
-      child: WillPopScope(
-        onWillPop: () async => true,
-        child: Scaffold(
-          appBar: Util.commonAppBar(
-            context,
-            name: "OTP",
-            centerTitle: true,
-          ),
-          backgroundColor: ThemeProvider.primary,
-          resizeToAvoidBottomInset: false,
-          body: Stack(
-            children: [
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  //Main content
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/illustrations/phone-security-password.svg",
-                          height: device.size.height * 0.20,
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        Text(
-                          "Verification code",
-                          style: Styles.textStyle(
-                              color: ThemeProvider.accent,
-                              fontWeight: FontWeight.w800,
-                              fontSize: FontSize.text2Xl),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "We have sent the code verification to Your Mobile Number",
-                          style: Styles.textStyle(
-                              color: ThemeProvider.fontPrimary.withOpacity(0.7),
-                              fontWeight: FontWeight.w700,
-                              fontSize: FontSize.textBase),
-                          textAlign: TextAlign.center,
-                        ),
-                        if (!isProcessing) ...[
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            phoneNo,
-                            style: Styles.textStyle(
-                                color: ThemeProvider.accent,
-                                fontWeight: FontWeight.w700,
-                                fontSize: FontSize.textXl),
-                          ),
-                        ],
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Pinput(
-                          animationCurve: Curves.bounceIn,
-                          controller: pinController,
-                          showCursor: true,
-                          length: 6,
-                          androidSmsAutofillMethod:
-                          AndroidSmsAutofillMethod.none,
-                          listenForMultipleSmsOnAndroid: true,
-                          focusNode: _focusNode,
-                          cursor: null,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          defaultPinTheme: isError
-                              ? defaultPinTheme.copyWith(
-                              textStyle: Styles.textStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.text2Xl,
-                                  color: Colors.red.withOpacity(0.7)),
-                              decoration: const BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border(
-                                    bottom: BorderSide(color: Colors.red)),
-                              ))
-                              : defaultPinTheme,
-                          onTap: () {
-                            setState(() {
-                              isError = false;
-                            });
-                          },
-                          focusedPinTheme: defaultPinTheme.copyWith(
-                              textStyle: Styles.textStyle(
-                                  color: ThemeProvider.secondary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.text2Xl),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: ThemeProvider.tertiary,
-                                        width: 3.0)),
-                              )),
-                        ),
+    return WillPopScope(
+      onWillPop: () async => true,
+      child: Scaffold(
+        appBar: Util.commonAppBar(
+          context,
+          name: "OTP",
+          centerTitle: true,
+        ),
+        backgroundColor: ThemeProvider.primary,
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                //Main content
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/illustrations/phone-security-password.svg",
+                        height: device.size.height * 0.20,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Text(
+                        "Verification code",
+                        style: Styles.textStyle(
+                            color: ThemeProvider.accent,
+                            fontWeight: FontWeight.w800,
+                            fontSize: FontSize.text2Xl),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "We have sent the code verification to Your Mobile Number",
+                        style: Styles.textStyle(
+                            color: ThemeProvider.fontPrimary.withOpacity(0.7),
+                            fontWeight: FontWeight.w700,
+                            fontSize: FontSize.textBase),
+                        textAlign: TextAlign.center,
+                      ),
+                      if (!isProcessing) ...[
                         const SizedBox(
                           height: 30,
                         ),
-                        if (!_resendOTP)
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              _counter != 0 ? _counter.toString() : "",
+                        Text(
+                          phoneNo,
+                          style: Styles.textStyle(
+                              color: ThemeProvider.accent,
+                              fontWeight: FontWeight.w700,
+                              fontSize: FontSize.textXl),
+                        ),
+                      ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Pinput(
+                        animationCurve: Curves.bounceIn,
+                        controller: pinController,
+                        showCursor: true,
+                        length: 6,
+                        androidSmsAutofillMethod:
+                        AndroidSmsAutofillMethod.none,
+                        listenForMultipleSmsOnAndroid: true,
+                        focusNode: _focusNode,
+                        cursor: null,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        defaultPinTheme: isError
+                            ? defaultPinTheme.copyWith(
+                            textStyle: Styles.textStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: FontSize.text2Xl,
+                                color: Colors.red.withOpacity(0.7)),
+                            decoration: const BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border(
+                                  bottom: BorderSide(color: Colors.red)),
+                            ))
+                            : defaultPinTheme,
+                        onTap: () {
+                          setState(() {
+                            isError = false;
+                          });
+                        },
+                        focusedPinTheme: defaultPinTheme.copyWith(
+                            textStyle: Styles.textStyle(
+                                color: ThemeProvider.secondary,
+                                fontWeight: FontWeight.w700,
+                                fontSize: FontSize.text2Xl),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: ThemeProvider.tertiary,
+                                      width: 3.0)),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      if (!_resendOTP)
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            _counter != 0 ? _counter.toString() : "",
+                            style: Styles.textStyle(
+                                color: ThemeProvider.fontPrimary,
+                                fontSize: FontSize.textXl,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      if (_resendOTP)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Did not receive the code? ",
                               style: Styles.textStyle(
                                   color: ThemeProvider.fontPrimary,
-                                  fontSize: FontSize.textXl,
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: FontSize.textBase,
+                                  fontWeight: FontWeight.w600),
                             ),
-                          ),
-                        if (_resendOTP)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Did not receive the code? ",
+                            GestureDetector(
+                              onTap: _resendOtp,
+                              child: Text(
+                                "resend otp",
                                 style: Styles.textStyle(
-                                    color: ThemeProvider.fontPrimary,
+                                    color: ThemeProvider.fontSecondary,
                                     fontSize: FontSize.textBase,
                                     fontWeight: FontWeight.w600),
                               ),
-                              GestureDetector(
-                                onTap: _resendOtp,
-                                child: Text(
-                                  "resend otp",
-                                  style: Styles.textStyle(
-                                      color: ThemeProvider.fontSecondary,
-                                      fontSize: FontSize.textBase,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
-                        const SizedBox(
-                          height: 25,
+                            ),
+                          ],
                         ),
-                      ],
+                      const SizedBox(
+                        height: 25,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 30,
+              left: 25,
+              right: 25,
+              child: isCodeSent ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 10),
+                    backgroundColor: ThemeProvider.secondary,
+                    shadowColor: Colors.black45,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                ],
-              ),
-              Positioned(
-                bottom: 30,
-                left: 25,
-                right: 25,
-                child: isCodeSent ? ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 10),
-                      backgroundColor: ThemeProvider.secondary,
-                      shadowColor: Colors.black45,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    onPressed: () async {
-                      //Verify the OTP
-                      PhoneAuthCredential credential =
-                      PhoneAuthProvider.credential(
-                          verificationId: verificationCode!,
-                          smsCode: pinController.text);
-                      await _startLoginSequence(credential);
-                    },
-                    child: !isVerifying
-                        ? Text("Verify",
-                        style: Styles.textStyle(
-                            color: ThemeProvider.accent,
-                            fontWeight: FontWeight.bold,
-                            fontSize: FontSize.textLg))
-                        : SpinKitCircle(
-                      color: ThemeProvider.accent,
-                      size: 25,
-                    )) : Center(child: SpinKitThreeBounce(color: ThemeProvider.accent,size: 35,)),
-              )
-            ],
-          ),
+                  onPressed: !isVerifying ? () async {
+                    //Verify the OTP
+                    PhoneAuthCredential credential =
+                    PhoneAuthProvider.credential(
+                        verificationId: verificationCode!,
+                        smsCode: pinController.text);
+                    await _startLoginSequence(credential);
+                  } : null,
+                  child: !isVerifying
+                      ? Text("Verify",
+                      style: Styles.textStyle(
+                          color: ThemeProvider.accent,
+                          fontWeight: FontWeight.bold,
+                          fontSize: FontSize.textLg))
+                      : SpinKitCircle(
+                    color: ThemeProvider.accent,
+                    size: 25,
+                  )) : Center(child: SpinKitThreeBounce(color: ThemeProvider.accent,size: 35,)),
+            )
+          ],
         ),
       ),
     );

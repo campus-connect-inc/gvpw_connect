@@ -4,12 +4,10 @@ import 'package:gvpw_connect/utils/shared_preferences_service.dart';
 import 'package:gvpw_connect/utils/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-
-import 'consts.dart';
-
+import './consts.dart';
 class DatabaseService {
 
-  ///checks if an user document exists.
+  ///checks if an user document exists
   static Future<bool> checkIfUserDocExists() async {
     final auth = FirebaseAuth.instance;
     final fireStore = FirebaseFirestore.instance;
@@ -19,11 +17,11 @@ class DatabaseService {
     return userDoc.exists;
   }
 
-  //This below function is stubborn not working 😔
+  //Non functional function
   static Future<void> submitFilledSurveyUsingCloud(
       Map<String, dynamic> surveyResponse) async {
     final HttpsCallable submitFilledSurvey =
-    FirebaseFunctions.instanceFor(region: firebaseCFRegion).httpsCallable('submitFilledSurvey');
+    FirebaseFunctions.instanceFor(region: FIREBASE_CF_REGION).httpsCallable('submitFilledSurvey');
     try {
       final response = await submitFilledSurvey
           .call(<String, dynamic>{'surveyResponse': surveyResponse});
@@ -58,31 +56,6 @@ class DatabaseService {
       //send notification to all the users that the survey has been posted.
     } on FirebaseException catch (e) {
       Util.toast('Error submitting survey response: ${e.code}');
-    }
-  }
-
-  static Future<void> updateSurvey(
-      Map<String, dynamic> data, String surveyId) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('organizations/${SharedPreferencesService.userOrg}/surveys')
-          .doc(surveyId)
-          .update(data);
-      Util.toast("🚀Update successful!");
-    } on FirebaseException catch (e) {
-      Util.toast(e.code);
-    }
-  }
-  static Future<bool> deleteSurvey(String surveyId)async{
-    final firestore = FirebaseFirestore.instance;
-    try{
-      await firestore.collection('organizations/${SharedPreferencesService.userOrg}/surveys').doc(surveyId).delete();
-      return true;
-    }on FirebaseException catch(e){
-      if(kDebugMode){
-        print(e.code);
-      }
-      return false;
     }
   }
 }

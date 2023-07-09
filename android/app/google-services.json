@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "874316160398",
+    "project_id": "campus-connect-inc",
+    "storage_bucket": "campus-connect-inc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874316160398:android:58aad4163d2213a66958df",
+        "android_client_info": {
+          "package_name": "com.campusconnect.gpsxtreme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874316160398-4vvi8irqr4tqpjsg3lv95vs25nq3fplj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.campusconnect.gpsxtreme",
+            "certificate_hash": "1872f907b0c2e7e00f669e3fb49e5fdcceef42a3"
+          }
+        },
+        {
+          "client_id": "874316160398-75dbbbhe0bdrreqkvuvc5h8b5oafa5ut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.campusconnect.gpsxtreme",
+            "certificate_hash": "7442119ab6fded5c88bc0b583a1dd7ec1c5b3837"
+          }
+        },
+        {
+          "client_id": "874316160398-tfvqb0vdjreitl2osvmeq4ejo4kegvop.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.campusconnect.gpsxtreme",
+            "certificate_hash": "b49e7936b096730dad19423f333c2ffb901132eb"
+          }
+        },
+        {
+          "client_id": "874316160398-trevr69qklm6ldc6jqaesd5av29ctf8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCps8V5dDeMZm_eDO3tb0MPQbkkaURApkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874316160398-trevr69qklm6ldc6jqaesd5av29ctf8h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874316160398-2r20tm4ogqqi2qjrla6hvepogu1q09hi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "me.prudhvisuraaj.app.feedbackApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874316160398:android:bc2311a64e6124136958df",
+        "android_client_info": {
+          "package_name": "com.connect.gvpcew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874316160398-trevr69qklm6ldc6jqaesd5av29ctf8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCps8V5dDeMZm_eDO3tb0MPQbkkaURApkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874316160398-trevr69qklm6ldc6jqaesd5av29ctf8h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "874316160398-2r20tm4ogqqi2qjrla6hvepogu1q09hi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "me.prudhvisuraaj.app.feedbackApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
