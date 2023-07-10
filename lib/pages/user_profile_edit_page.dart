@@ -19,7 +19,6 @@ class _UserProfileEditPageState extends State<UserProfileEditPage> {
   double tileGap = 25.0;
   double tileContentGap = 5.0;
   bool isUpdating = false;
-  late UserDataProvider userDataProvider;
 
   Widget label(String title, {double? fontSize, Color? color}) => Text(
     title,
@@ -28,6 +27,33 @@ class _UserProfileEditPageState extends State<UserProfileEditPage> {
         fontSize: fontSize ?? FontSize.textBase,
         fontWeight: FontWeight.w700),
   );
+
+  bool hasChanges(UserDataProvider userDataProvider) {
+    final initialData = userDataProvider.userData;
+
+    // Compare the fields that can be changed
+    if (userDataProvider.newProfilePicture != null) {
+      return true;
+    }
+
+    if (userDataProvider.personalEmail.trim().isNotEmpty ||
+        userDataProvider.secondaryPhoneNo.trim().isNotEmpty ||
+        userDataProvider.careTakerPhoneNo.trim().isNotEmpty) {
+      final updatedData = {
+        "personalEmail": userDataProvider.personalEmail,
+        "secondaryPhoneNo": userDataProvider.secondaryPhoneNo,
+        "careTakerPhoneNo": userDataProvider.careTakerPhoneNo,
+      };
+
+      if (initialData == updatedData) {
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
 
   Future<void> onUpdate(UserDataProvider userDataProvider) async {
     setState(() {
@@ -77,25 +103,34 @@ class _UserProfileEditPageState extends State<UserProfileEditPage> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData device = MediaQuery.of(context);
+    final userDataProvider = Provider.of<UserDataProvider>(context);
     return WillPopScope(
       onWillPop: () async {
         return !isUpdating;
       },
       child: Scaffold(
         appBar: Util.commonAppBar(context,
-            disableBackFunction: isUpdating,
-            name: "Edit profile",
-            backgroundColor: ThemeProvider.secondary.withOpacity(0.75),
+          disableBackFunction: isUpdating,
+          name: "Edit profile",
+          backgroundColor: ThemeProvider.secondary.withOpacity(0.75),
+          leadingIconAction: hasChanges(userDataProvider) ? () async {
+            bool? response = await Util.commonAlertDialog(context,
+                title: "Discard Changes?",
+                body: "You have made changes that haven't been saved. Are you sure you want to go back without saving?",
+                agreeLabel: "Discard Changes",
+                denyLabel: "Continue Editing");
+            if(response != null && response){
+              Navigator.pop(context);
+            }
+          } : null,
         ),
         backgroundColor: ThemeProvider.primary,
         body: Consumer<UserDataProvider>(
           builder: (context, userDataProvider, child) => Stack(
             children: [
               //pick user profile picture
-              Positioned(
-                top: 0,
-                right: 0,
-                left: 0,
+              SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Column(
                   children: [
                     Material(
